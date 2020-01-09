@@ -29,10 +29,25 @@ class LookerHook(BaseHook):
         Returns http session for use with requests
         """
         conn = self.get_connection(self.looker_conn_id)
+
+        if conn.host is None:
+            _message = "Failed to initialize looker airflow connector, connection host not provided"
+            self.logger.error(_message)
+            raise AirflowException(_message)
+
+        if conn.login is None:
+            _message = "Failed to initialize looker Airflow connector, connection login not provided"
+            self.logger.error(_message)
+            raise AirflowException(_message)
+
+        if conn.password is None:
+            _message = "Failed to initialize looker Airflow connector, connection password not provided"
+            self.logger.error(_message)
+            raise AirflowException(_message)
+
         session = requests.Session()
 
         self.api_endpoint = conn.host
-
         token_request = requests.post(
             url=self.api_endpoint + "login",
             data={
@@ -91,3 +106,25 @@ class LookerHook(BaseHook):
             self.log.error(response.text)
             raise AirflowException(str(response.status_code) + ":" + response.reason)
         return response
+
+    def get_look_sql(self, look_id=None):
+        """
+        Gets a SQL query from a Looker look resource
+        :param look_id: unique identifier for a look resource
+        :type look_id: int
+        :return: sql string
+        """
+        if look_id is None:
+            _message = "No look_id provided"
+            self.log.error(_message)
+            raise AirflowException(_message)
+
+        endpoint = '{}/{}/run/{}'.format('api/3.0/looks', look_id, 'sql')
+        self.log.info("Fetching looker %s query", endpoint)
+        response = self.call(method='GET', endpoint=endpoint, data=None)
+
+        if response.status_code > 200:
+            _message = 'Failed to fetch query {}'.format(response.reason)
+            self.log.error(_message)
+            raise AirflowException(_message)
+        return response.text
