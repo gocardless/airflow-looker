@@ -1,5 +1,6 @@
 import requests
 import json
+from urllib.parse import urljoin
 
 from airflow.hooks.base_hook import BaseHook
 from airflow.exceptions import AirflowException
@@ -49,7 +50,7 @@ class LookerHook(BaseHook):
 
         self.api_endpoint = conn.host
         token_request = requests.post(
-            url=self.api_endpoint + "login",
+            url=urljoin(self.api_endpoint, "login"),
             data={
                 "client_id": conn.login,
                 "client_secret": conn.password
@@ -75,7 +76,7 @@ class LookerHook(BaseHook):
         """
 
         session = self.get_conn()
-        url = self.api_endpoint + endpoint
+        url = urljoin(self.api_endpoint, endpoint)
 
         req = None
         if method == 'GET':
