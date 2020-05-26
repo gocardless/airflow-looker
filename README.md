@@ -41,7 +41,7 @@ You can also use the hook directly. The two methods that are implemented for use
     * `headers`
       * Additional headers to be passed through as a dictionary. Optional.
 * `get_look_sql`
-  * Gets a SQL query from a Looker look resource and returns the SQL as a string. Accepts the following arguments:
+  * Gets an SQL query from a Looker look resource and returns the SQL as a string. Accepts the following arguments:
     * `look_id`
       * Unique identifier for a look resource. Required.
 
