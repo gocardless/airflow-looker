@@ -1,0 +1,54 @@
+version: 2
+
+references:
+  defaults: &defaults
+      docker:
+        - image: python:3.7.4
+
+  restore-cache: &restore-cache
+    restore_cache:
+      key: py3.7-{{ checksum "setup.py"  }}
+
+  save-cache: &save-cache
+    save_cache:
+      key: py3.7-{{ checksum "setup.py"  }}
+      paths:
+        - /root/.local/lib/
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - *restore-cache
+      - run:
+          name: Install deps
+          command: pip install --progress-bar off --user -e .[dev]
+      - *save-cache
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - *restore-cache
+      - run:
+          name: Run tests
+          command: python -m pytest tests/ -sv
+
+  lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - *restore-cache
+      - run:
+          name: Run lints
+          command: python -m flake8 airflow_looker/ tests/ setup.py
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - build
+      - test:
+          requires: [build]
+      - lint:
+          requires: [build]
