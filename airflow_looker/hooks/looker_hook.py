@@ -67,6 +67,8 @@ class LookerHook(BaseHook):
     def call(self, method, endpoint, data, headers=None):
         """
         Call the Looker API and return results
+        :param method: the method of the call (`GET`, `POST`, etc)
+        :type method: str
         :param endpoint: the endpoint to be called i.e. looks/run/1
         :type endpoint: str
         :param data: payload to be uploaded or request parameters
