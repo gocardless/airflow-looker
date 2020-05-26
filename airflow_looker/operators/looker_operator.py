@@ -1,5 +1,5 @@
 import time
-from dags._hooks.looker_hook import LookerHook
+from airflow_looker.hooks.looker_hook import LookerHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 

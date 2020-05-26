@@ -8,7 +8,7 @@ from requests import Response
 from airflow import AirflowException
 from airflow.hooks.base_hook import BaseHook
 from airflow.models import Connection
-from dags._hooks.looker_hook import LookerHook
+from airflow_looker.hooks.looker_hook import LookerHook
 
 
 class TestLookerHook(unittest.TestCase):
