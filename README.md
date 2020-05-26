@@ -90,7 +90,7 @@ This project uses [flake8](https://flake8.pycqa.org/en/latest/).
 To check your code, first create a virtual environment (see [Building Locally](https://github.com/gocardless/airflow-looker#building-locally) section):
 
 ```bash
-flake8 airflow_looker/ tests/ setup.py
+python -m flake8 airflow_looker/ tests/ setup.py
 ```
 
 ## License & Contributing
