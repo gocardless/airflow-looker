@@ -66,9 +66,14 @@ class TestLookerHook(unittest.TestCase):
         self.assertEqual(self.looker_host, self.default_hook.api_endpoint)
         self.assertEqual("token {}".format(self.looker_auth_token), conn.headers['Authorization'])
 
-    def test_create_hook_without_airflow_connection(self):
+    @mock.patch.object(BaseHook, "get_connection")
+    def test_create_hook_without_airflow_connection(self, mock_get_connection):
         # Here a default connection will be created with looker_conn_id='looker_default' but wont have password, login
         # attributes
+        mock_get_connection.return_value = Connection(
+            conn_id=self.airflow_looker_conn_id,
+            conn_type='http'
+        )
         with self.assertRaises(AirflowException):
             self.default_hook.get_conn()
 
