@@ -1,3 +1,5 @@
+**DEPRECATED**: No longer updated
+
 # airflow-looker
 
 This is a collection of [Airflow](https://airflow.apache.org/) extensions to provide integration with [Looker](https://www.looker.com).
@@ -7,14 +9,6 @@ with DAG(dag_id='looker_update_datagroup', schedule_interval='@daily') as dag:
   LookerUpdateDataGroupByIDOperator(
     datagroup_id=123
   )
-```
-
-## Installation
-
-Install from PyPI:
-
-```sh
-pip install airflow-looker
 ```
 
 ## Usage
